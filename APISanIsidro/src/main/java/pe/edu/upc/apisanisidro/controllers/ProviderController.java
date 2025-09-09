@@ -2,11 +2,14 @@ package pe.edu.upc.apisanisidro.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.apisanisidro.dtos.ProviderDTO;
 import pe.edu.upc.apisanisidro.entities.Provider;
 import pe.edu.upc.apisanisidro.servicesinterfaces.IProviderService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,5 +34,67 @@ public class ProviderController {
         ModelMapper m=new ModelMapper();
         Provider prov = m.map(dto,Provider.class);
         service.insert(prov);
+    }
+
+    //Metodo GET - Listar datos por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
+        Provider prov = service.listId(id);
+        if (prov == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("No existe un registro con el ID: " + id);
+        }
+        ModelMapper m = new ModelMapper();
+        ProviderDTO dto = m.map(prov, ProviderDTO.class);
+        return ResponseEntity.ok(dto);
+    }
+
+    //Metodo DELETE - borra por el ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
+        Provider p = service.listId(id);
+        if (p == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No existe un registro con el ID: " + id);
+        }
+        service.delete(id);
+        return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
+    }
+
+    //Metodo PUT - actualizar datos
+    @PutMapping
+    public ResponseEntity<String> modificar(@RequestBody ProviderDTO dto) {
+        ModelMapper m = new ModelMapper();
+        Provider p = m.map(dto, Provider.class);
+
+        // Validación de existencia
+        Provider existente = service.listId(p.getId());
+        if (existente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se puede modificar. No existe un registro con el ID: " + p.getId());
+        }
+
+        // Actualización si pasa validaciones
+        service.update(p);
+        return ResponseEntity.ok("Registro con ID " + p.getId() + " modificado correctamente.");//
+    }
+
+    //Metodo GET - buscar por nombre
+    @GetMapping("/busquedas")
+    public ResponseEntity<?> buscarXNombre(@RequestParam String n) {
+        List<Provider> proveedores = service.buscarXNombreService(n);
+
+        if (proveedores.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron proveedores: " + n);
+        }
+
+        List<ProviderDTO> listaDTO = proveedores.stream().map(x -> {
+            ModelMapper m = new ModelMapper();
+            return m.map(x, ProviderDTO.class);
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(listaDTO);
     }
 }
