@@ -23,4 +23,24 @@ public class ProviderServiceImplement implements IProviderService {
     public void insert(Provider p) {
         repository.save(p); //usa CRUD
     }
+
+    @Override
+    public Provider listId(int id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(int id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public void update(Provider p) {
+        repository.save(p);
+    }
+
+    @Override
+    public List<Provider> buscarXNombreService(String nombre) {
+        return repository.buscarXNombre(nombre);
+    }
 }
