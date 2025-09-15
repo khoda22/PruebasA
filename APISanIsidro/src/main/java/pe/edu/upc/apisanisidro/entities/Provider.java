@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class Provider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int idProvider;
 
     @Column(name= "nameProvider", length = 40,nullable = false)
     private String nameProvider;
@@ -38,7 +38,7 @@ public class Provider {
 
     //generar constructor con todas los atributos
     public Provider(int id, String nameProvider, String addressProvider, String phoneProvider, boolean statusProvider, String typeProvider, LocalDate dateRegisterProvider, double amountWarrantyProvider) {
-        this.id = id;
+        this.idProvider = id;
         this.nameProvider = nameProvider;
         this.addressProvider = addressProvider;
         this.phoneProvider = phoneProvider;
@@ -49,12 +49,12 @@ public class Provider {
     }
 
     //generar getter and setter de todos los atributos
-    public int getId() {
-        return id;
+    public int getIdProvider() {
+        return idProvider;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdProvider(int idProvider) {
+        this.idProvider = idProvider;
     }
 
     public String getNameProvider() {
