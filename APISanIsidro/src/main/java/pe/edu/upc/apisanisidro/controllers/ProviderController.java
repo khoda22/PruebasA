@@ -37,13 +37,13 @@ public class ProviderController {
     }
 
     //Metodo GET - Listar datos por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<?> listarId(@PathVariable("id") Integer id) {
-        Provider prov = service.listId(id);
+    @GetMapping("/{idProvider}")
+    public ResponseEntity<?> listarId(@PathVariable("idProvider") Integer idProvider) {
+        Provider prov = service.listId(idProvider);
         if (prov == null) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body("No existe un registro con el ID: " + id);
+                    .body("No existe un registro con el ID: " + idProvider);
         }
         ModelMapper m = new ModelMapper();
         ProviderDTO dto = m.map(prov, ProviderDTO.class);
@@ -51,15 +51,15 @@ public class ProviderController {
     }
 
     //Metodo DELETE - borra por el ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable("id") Integer id) {
-        Provider p = service.listId(id);
+    @DeleteMapping("/{idProvider}")
+    public ResponseEntity<String> eliminar(@PathVariable("idProvider") Integer idProvider) {
+        Provider p = service.listId(idProvider);
         if (p == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No existe un registro con el ID: " + id);
+                    .body("No existe un registro con el ID: " + idProvider);
         }
-        service.delete(id);
-        return ResponseEntity.ok("Registro con ID " + id + " eliminado correctamente.");
+        service.delete(idProvider);
+        return ResponseEntity.ok("Registro con ID " + idProvider + " eliminado correctamente.");
     }
 
     //Metodo PUT - actualizar datos
@@ -69,15 +69,15 @@ public class ProviderController {
         Provider p = m.map(dto, Provider.class);
 
         // Validación de existencia
-        Provider existente = service.listId(p.getId());
+        Provider existente = service.listId(p.getIdProvider());
         if (existente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se puede modificar. No existe un registro con el ID: " + p.getId());
+                    .body("No se puede modificar. No existe un registro con el ID: " + p.getIdProvider());
         }
 
         // Actualización si pasa validaciones
         service.update(p);
-        return ResponseEntity.ok("Registro con ID " + p.getId() + " modificado correctamente.");//
+        return ResponseEntity.ok("Registro con ID " + p.getIdProvider() + " modificado correctamente.");//
     }
 
     //Metodo GET - buscar por nombre

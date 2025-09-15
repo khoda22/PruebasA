@@ -3,7 +3,7 @@ package pe.edu.upc.apisanisidro.dtos;
 import java.time.LocalDate;
 
 public class ProviderDTO {
-    private int id;
+    private int idProvider;
     private String nameProvider;
     private String addressProvider;
     private String phoneProvider;
@@ -12,12 +12,12 @@ public class ProviderDTO {
     private LocalDate dateRegisterProvider;
     private double amountWarrantyProvider;
 
-    public int getId() {
-        return id;
+    public int getIdProvider() {
+        return idProvider;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdProvider(int idProvider) {
+        this.idProvider = idProvider;
     }
 
     public String getNameProvider() {

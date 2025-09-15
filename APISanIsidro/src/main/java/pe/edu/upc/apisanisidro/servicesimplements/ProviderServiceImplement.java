@@ -25,13 +25,13 @@ public class ProviderServiceImplement implements IProviderService {
     }
 
     @Override
-    public Provider listId(int id) {
-        return repository.findById(id).orElse(null);
+    public Provider listId(int idProvider) {
+        return repository.findById(idProvider).orElse(null);
     }
 
     @Override
-    public void delete(int id) {
-        repository.deleteById(id);
+    public void delete(int idProvider) {
+        repository.deleteById(idProvider);
     }
 
     @Override
